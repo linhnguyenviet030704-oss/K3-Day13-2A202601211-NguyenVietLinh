@@ -1,8 +1,11 @@
 # Dashboard Spec - CP2
 
-Nguon du lieu runtime: `GET /metrics`.
+Nguon du lieu dashboard: `data/logs.jsonl`.
 
-Lenh kiem tra du lieu hien tai:
+`GET /metrics` chi la endpoint kiem tra nhanh snapshot runtime, khong phai
+nguon chuan cua 6 panel dashboard.
+
+Lenh kiem tra snapshot hien tai:
 
 ```bash
 curl http://localhost:8000/metrics | python -m json.tool
@@ -30,14 +33,14 @@ Cong cu su dung: dashboard spec trong repo cho CP2; Langfuse dung cho trace wate
 
 Khoang thoi gian mac dinh: 60 phut. Tu refresh: 30 giay.
 
-| # | Nhom | Panel | Field tu `/metrics` | Don vi | Visualization | Threshold/SLO line |
+| # | Nhom | Panel | Event/field tu `data/logs.jsonl` | Don vi | Visualization | Threshold/SLO line |
 |---|---|---|---|---|---|---|
-| 1 | Latency | Latency P50/P95/P99 | `latency_p50`, `latency_p95`, `latency_p99` | ms | Line chart + single value P95 | P95 <= 3000 ms |
-| 2 | Traffic | Request traffic | `traffic` | requests | Counter tong request | >= 1 request/phut khi load test |
-| 3 | Error | Error rate and breakdown | `error_rate_pct`, `error_breakdown` | %, count | Single value error rate + table breakdown | Error rate <= 2%; critical neu > 5% trong 3 phut |
-| 4 | Cost | Cost budget | `total_cost_usd`, `avg_cost_usd` | USD | Gauge tong chi phi + avg cost | Daily cost <= 2.5 USD |
-| 5 | Tokens | Token consumption | `tokens_in_total`, `tokens_out_total` | tokens | Stacked bar input/output | Canh bao neu tong token tang bat thuong so voi baseline |
-| 6 | Quality | Average quality score | `quality_avg` | score 0-1 | Single value + trend line | Quality avg >= 0.75 |
+| 1 | Latency | Latency P50/P95/P99 | `response_sent.latency_ms` | ms | Line chart + single value P95 | P95 <= 3000 ms |
+| 2 | Traffic | Request traffic | `request_received` | requests/minute | Counter tong request | >= 1 request/phut khi load test |
+| 3 | Error | Error rate and breakdown | `request_received`, `request_failed`, `error_type` | %, count | Single value error rate + table breakdown | Error rate <= 2%; critical neu > 5% trong 3 phut |
+| 4 | Cost | Cost budget | `response_sent.cost_usd` | USD | Gauge tong chi phi + avg cost | Daily cost <= 2.5 USD |
+| 5 | Tokens | Token consumption | `response_sent.tokens_in`, `response_sent.tokens_out` | tokens | Stacked bar input/output | Canh bao neu tong token tang bat thuong so voi baseline |
+| 6 | Quality | Average quality score | `response_sent.quality_score` | score 0-1 | Single value + trend line | Quality avg >= 0.75 |
 
 Yeu cau evidence: luu anh dashboard hoac file spec da dien day du trong `submission/evidence/`. Anh dashboard neu co phai thay ten panel, time range, don vi va threshold/SLO line.
 
