@@ -34,8 +34,8 @@ Moi alert ben duoi dua tren trieu chung nguoi dung thay duoc hoac SLO, khong dua
 
 - Ten: `cost_budget_exceeded`
 - Severity: warning
-- SLI/SLO lien quan: `daily_cost_usd`, objective <= 2.5 USD/ngay, target 100.0%
-- Dieu kien kich hoat: `daily_cost_usd > 2.5`
+- SLI/SLO lien quan: `cost_window_usd`, objective <= 2.5 USD trong cua so 60 phut, target 100.0%
+- Dieu kien kich hoat: `total_cost_usd > 2.5 over 60 minutes`
 - Anh huong toi nguoi dung: he thong co nguy co bi gioi han ngan sach, bi cat giam load test, hoac phai dung prompt/model re hon.
 - Ba buoc kiem tra dau tien:
   1. Mo panel Cost budget, so sanh `total_cost_usd` va `avg_cost_usd` voi baseline truoc load test.

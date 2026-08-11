@@ -13,7 +13,7 @@ alerts:
     runbook: docs/alerts.md#alert-2
   - name: cost_budget_exceeded
     severity: warning
-    condition: "daily_cost_usd > 2.5"
+    condition: "total_cost_usd > 2.5 over 60 minutes"
     type: symptom-based
     owner: team-lead
     runbook: docs/alerts.md#alert-3

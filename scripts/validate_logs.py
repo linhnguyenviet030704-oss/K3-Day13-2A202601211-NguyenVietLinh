@@ -4,8 +4,8 @@ import sys
 from pathlib import Path
 
 LOG_PATH = Path("data/logs.jsonl")
-REQUIRED_FIELDS = {"ts", "level", "service", "event", "correlation_id"}
-ENRICHMENT_FIELDS = {"user_id_hash", "session_id", "feature", "model"}
+REQUIRED_FIELDS = {"ts", "level", "service", "event"}
+ENRICHMENT_FIELDS = {"user_id_hash", "session_id", "feature", "model", "env"}
 PII_DETECTORS = {
     "email": re.compile(r"[\w.-]+@[\w.-]+\.\w+"),
     "phone_vn": re.compile(r"(?<!\d)(?:\+84|0)(?:[ .-]?\d){9}(?!\d)"),
@@ -39,7 +39,7 @@ def main() -> None:
 
     for rec in records:
         # Check required fields (global)
-        if not {"ts", "level", "event"}.issubset(rec.keys()):
+        if not REQUIRED_FIELDS.issubset(rec.keys()):
             missing_required += 1
             
         # Context-specific checks for API requests
