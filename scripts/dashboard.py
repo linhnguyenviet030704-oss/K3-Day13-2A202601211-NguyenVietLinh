@@ -147,6 +147,9 @@ def apply_style() -> None:
             color: #43536a;
             font-size: 0.88rem;
         }
+        div[data-testid="stMetricValue"] {
+            color: #0f172a;
+        }
         .status {
             display: inline-block;
             border-radius: 999px;

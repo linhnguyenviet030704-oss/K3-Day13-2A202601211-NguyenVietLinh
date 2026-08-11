@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from structlog.contextvars import bind_contextvars
 
 from .agent import LabAgent
+from .audit import record_audit_event
 from .incidents import disable, enable, status
 from .logging_config import configure_logging, get_logger
 from .metrics import record_error, snapshot
@@ -29,6 +30,13 @@ async def startup() -> None:
         service=os.getenv("APP_NAME", "day13-observability-lab"),
         env=os.getenv("APP_ENV", "dev"),
         payload={"tracing_enabled": tracing_enabled()},
+    )
+    record_audit_event(
+        "app_config_loaded",
+        env=os.getenv("APP_ENV", "dev"),
+        tracing_enabled=tracing_enabled(),
+        max_output_tokens=os.getenv("MAX_OUTPUT_TOKENS", "180"),
+        actor="system",
     )
 
 
@@ -100,6 +108,7 @@ async def enable_incident(name: str) -> JSONResponse:
     try:
         enable(name)
         log.warning("incident_enabled", service="control", payload={"name": name})
+        record_audit_event("incident_enabled", name=name, actor="api")
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -110,6 +119,7 @@ async def disable_incident(name: str) -> JSONResponse:
     try:
         disable(name)
         log.warning("incident_disabled", service="control", payload={"name": name})
+        record_audit_event("incident_disabled", name=name, actor="api")
         return JSONResponse({"ok": True, "incidents": status()})
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
