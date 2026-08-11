@@ -2,10 +2,13 @@
 
 ## 1. Thông tin nhóm
 
-- Tên nhóm:
-- Repository URL:
+- Tên nhóm: Matikanefukukitaru
+- Repository URL:https://github.com/linhnguyenviet030704-oss/K3-Day13-2A202601211-NguyenVietLinh/
 - Commit SHA cuối:
 - Thành viên và vai trò:
+Nguyễn Việt Linh - 2A202601211 - Role A: CP1, Xây dựng Middleware, gán Correlation ID, Enrichment logs
+Nguyễn Thị Hoàng Yến - 2A202601959 : Role B: CP2, Cấu hình Langfuse, thiết lập SLO/Alert Rules, viết tài liệu Alert Runbook.
+Đỗ Tùng Dương - 2A202601899 - Role C: Thiết kế Dashboard Spec, thực hiện load test, quản lý Challenge/Practice Incident (CP3) và tổng hợp báo cáo nhóm.
 
 ## 2. Kết quả kỹ thuật
 
