@@ -33,6 +33,21 @@ def test_repository_dashboard_contract_is_valid() -> None:
     assert "6/6 panel" in result.stdout
 
 
+def test_cost_contract_uses_dashboard_window_not_daily_budget() -> None:
+    payload = yaml.safe_load(
+        (REPO_ROOT / "config" / "dashboard.yaml").read_text(encoding="utf-8")
+    )
+    cost_panel = next(panel for panel in payload["dashboard"]["panels"] if panel["id"] == "cost")
+
+    assert payload["dashboard"]["time_range_minutes"] == 60
+    assert cost_panel["threshold"]["aggregation"] == "total"
+
+    for path in ("config/slo.yaml", "config/alert_rules.yaml", "docs/alerts.md"):
+        text = (REPO_ROOT / path).read_text(encoding="utf-8")
+        assert "daily_cost_usd" not in text
+        assert "USD/ngay" not in text
+
+
 def test_validator_rejects_panel_without_threshold(tmp_path: Path) -> None:
     payload = yaml.safe_load(
         (REPO_ROOT / "config" / "dashboard.yaml").read_text(encoding="utf-8")

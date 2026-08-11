@@ -28,8 +28,8 @@ class LogRecord(BaseModel):
     level: Literal["info", "warning", "error", "critical"]
     service: str
     event: str
-    correlation_id: str
-    env: str
+    correlation_id: str | None = None
+    env: str | None = None
     user_id_hash: str | None = None
     session_id: str | None = None
     feature: str | None = None
@@ -38,6 +38,7 @@ class LogRecord(BaseModel):
     tokens_in: int | None = None
     tokens_out: int | None = None
     cost_usd: float | None = None
+    quality_score: float | None = None
     error_type: str | None = None
     tool_name: str | None = None
     payload: dict[str, Any] | None = None
